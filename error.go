@@ -12,7 +12,7 @@ func (resp *Response) Unauthorized(v interface{}) {
 	resp.writeResponse(http.StatusUnauthorized, v)
 }
 
-// Forbidden returns a 401 Forbidden JSON response
+// Forbidden returns a 403 Forbidden JSON response
 func (resp *Response) Forbidden(v interface{}) {
 	resp.writeResponse(http.StatusForbidden, v)
 }
@@ -27,9 +27,19 @@ func (resp *Response) MethodNotAllowed(v interface{}) {
 	resp.writeResponse(http.StatusMethodNotAllowed, v)
 }
 
+// NotAcceptable returns a 406 Not Acceptable JSON response
+func (resp *Response) NotAcceptable(v interface{}) {
+	resp.writeResponse(http.StatusNotAcceptable, v)
+}
+
 // Conflict returns a 409 Conflict JSON response
 func (resp *Response) Conflict(v interface{}) {
 	resp.writeResponse(http.StatusConflict, v)
+}
+
+// Gone returns a 410 Gone JSON response
+func (resp *Response) Gone(v interface{}) {
+	resp.writeResponse(http.StatusGone, v)
 }
 
 // LengthRequired returns a 411 Length Required JSON response

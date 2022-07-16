@@ -121,6 +121,28 @@ func TestMethodNotAllowed(t *testing.T) {
 	}
 }
 
+func TestNotAcceptable(t *testing.T) {
+	t.Parallel()
+
+	req := newRequest(t, "GET")
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		NewResponse(w).
+			NotAcceptable(&Error{406, "Not acceptable"})
+	})
+	handler.ServeHTTP(rr, req)
+
+	if err := validateStatusCode(rr.Code, http.StatusNotAcceptable); err != nil {
+		t.Fatal(err.Error())
+	}
+
+	expected := `{"code":406,"message":"Not acceptable"}`
+	if err := validateResponseBody(rr.Body.String(), expected); err != nil {
+		t.Fatal(err.Error())
+	}
+}
+
 func TestConflict(t *testing.T) {
 	t.Parallel()
 
@@ -138,6 +160,28 @@ func TestConflict(t *testing.T) {
 	}
 
 	expected := `{"code":409,"message":"Username already take"}`
+	if err := validateResponseBody(rr.Body.String(), expected); err != nil {
+		t.Fatal(err.Error())
+	}
+}
+
+func TestGone(t *testing.T) {
+	t.Parallel()
+
+	req := newRequest(t, "POST")
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		res := NewResponse(w)
+		res.Gone(&Error{410, "Service gone"})
+	})
+	handler.ServeHTTP(rr, req)
+
+	if err := validateStatusCode(rr.Code, http.StatusGone); err != nil {
+		t.Fatal(err.Error())
+	}
+
+	expected := `{"code":410,"message":"Service gone"}`
 	if err := validateResponseBody(rr.Body.String(), expected); err != nil {
 		t.Fatal(err.Error())
 	}

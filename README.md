@@ -54,7 +54,9 @@ func main() {
 | 403 | Forbidden() |
 | 404 | NotFound() |
 | 405 | MethodNotAllowed() |
+| 406 | NotAcceptable() |
 | 409 | Conflict() |
+| 410 | Gone() |
 | 411 | LengthRequired() |
 | 412 | PreconditionFailed() |
 | 413 | RequestEntityTooLarge() |
